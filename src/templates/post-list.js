@@ -1,20 +1,15 @@
 import React from "react"
-
-import Layout from "../components/layout"
-import Post from "../components/post"
-import SEO from "../components/seo"
-import Pagination from "../components/pagination"
 import { graphql } from "gatsby"
+import Layout from "../components/layout"
+import Pagination from "../components/pagination"
+import Post from "../components/post"
 
-const IndexPage = ({ data }) => {
+const PostList = ({ pageContext, data }) => {
   const post = data.allMdx.edges
-  const postPerPage = 2
-  let numPages
-  numPages = Math.ceil(data.allMdx.totalCount / postPerPage)
+  const { currentPage, numPages } = pageContext
   return (
     <Layout>
-      <SEO title="Home" />
-      <div className="lg:flex md:flex max-w-full">
+      <div className="flex">
         {post.map(({ node }) => (
           <Post
             key={node.id}
@@ -27,21 +22,29 @@ const IndexPage = ({ data }) => {
           />
         ))}
       </div>
-      <Pagination currentPage={1} numPages={numPages} />
+
+      <Pagination currentPage={currentPage} numPages={numPages} />
     </Layout>
   )
 }
 
-export default IndexPage
+export default PostList
 
-export const query = graphql`
-  query {
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }, limit: 2) {
-      totalCount
+export const PostListQuery = graphql`
+  query blogListQuery($skip: Int!, $limit: Int!) {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      limit: $limit
+      skip: $skip
+    ) {
       edges {
         node {
+          fields {
+            slug
+          }
           id
           frontmatter {
+            description
             date(formatString: "DD MMMM, YYYY")
             title
             tags
@@ -52,9 +55,6 @@ export const query = graphql`
                 }
               }
             }
-          }
-          fields {
-            slug
           }
           excerpt
         }
