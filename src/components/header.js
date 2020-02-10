@@ -58,7 +58,8 @@ const Header = () => {
             <Link
               to="/news"
               className={`
-            font-medium text-xl rounded-full block lg:inline-block lg:mt-0 text-red-500 no-underline px-3 py-1  lg:px-3 lg:py-2 hover:bg-red-500 hover:text-white hover:font-extrabold focus:bg-red-500 focus:text-white focus:font-extrabold
+            font-medium text-xl rounded-full block lg:inline-block lg:mt-0 text-red-500 no-underline px-3 py-1 lg:px-3 lg:py-2 hover:bg-red-500 hover:text-white hover:font-extrabold focus:bg-red-500 focus:text-white focus:font-extrabold
+            hover:border-b-2
           `}
             >
               News
